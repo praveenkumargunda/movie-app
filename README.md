@@ -1,1 +1,1 @@
-gvuyu
+This is a movie- application and it contains several php files and all of them have their own purpose in this application. At beginning we will be able to register into this and can login and then we acn search the movies in the welcome page and can also add them to the "mylist" option. We can see what are the movies we added to the list and can also edit the list by adding or removing movies from them. This is the overall project description of this application.
