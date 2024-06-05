@@ -32,6 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['logout'])) {
         <form action="mylist.php">
             <input type="submit" value="My List">
         </form>
+        <form action="welcome.php" class="back-button">
+            <input type="submit" value="Back">
+        </form>
     </header>
     <div class="main">
         <div class="welcome-container">
