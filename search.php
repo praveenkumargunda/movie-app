@@ -18,6 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_list'])) {
     $movieActors = $_POST['movie_actors'];
     $moviePlot = $_POST['movie_plot'];
     $moviePoster = $_POST['movie_poster'];
+    $movieGenre = $_POST['movie_genre'];
+    $movieDirector = $_POST['movie_director'];
+    $movieRating = $_POST['movie_rating'];
 
     $movie = [
         'id' => $movieID,
@@ -25,7 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_list'])) {
         'year' => $movieYear,
         'actors' => $movieActors,
         'plot' => $moviePlot,
-        'poster' => $moviePoster
+        'poster' => $moviePoster,
+        'genre' => $movieGenre,
+        'director' => $movieDirector,
+        'rating' => $movieRating
     ];
 
     if (!isset($_SESSION['my_list'])) {
@@ -52,8 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_list'])) {
             echo '<div class="movie">';
             echo '<h3>' . htmlspecialchars($details['Title']) . '</h3>';
             echo '<p>Year: ' . htmlspecialchars($details['Year']) . '</p>';
+            echo '<p>Genre: ' . htmlspecialchars($details['Genre']) . '</p>';
+            echo '<p>Director: ' . htmlspecialchars($details['Director']) . '</p>';
             echo '<p>Actors: ' . htmlspecialchars($details['Actors']) . '</p>';
             echo '<p>Plot: ' . htmlspecialchars($details['Plot']) . '</p>';
+            echo '<p>Rating: ' . htmlspecialchars($details['imdbRating']) . '</p>';
             echo '<img src="' . htmlspecialchars($details['Poster']) . '" alt="Poster">';
             echo '<form method="post">';
             echo '<input type="hidden" name="movie_id" value="' . htmlspecialchars($details['imdbID']) . '">';
@@ -62,6 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_list'])) {
             echo '<input type="hidden" name="movie_actors" value="' . htmlspecialchars($details['Actors']) . '">';
             echo '<input type="hidden" name="movie_plot" value="' . htmlspecialchars($details['Plot']) . '">';
             echo '<input type="hidden" name="movie_poster" value="' . htmlspecialchars($details['Poster']) . '">';
+            echo '<input type="hidden" name="movie_genre" value="' . htmlspecialchars($details['Genre']) . '">';
+            echo '<input type="hidden" name="movie_director" value="' . htmlspecialchars($details['Director']) . '">';
+            echo '<input type="hidden" name="movie_rating" value="' . htmlspecialchars($details['imdbRating']) . '">';
             echo '<input type="submit" name="add_to_list" value="Add to List">';
             echo '</form>';
             echo '</div>';
