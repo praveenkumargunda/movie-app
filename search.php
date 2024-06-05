@@ -39,6 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_to_list'])) {
 <?php include('includes/header.php'); ?>
 <div class="search-results-container">
     <h2>Search Results for "<?php echo htmlspecialchars($query); ?>"</h2>
+    <form action="welcome.php" class="back-button">
+        <input type="submit" value="Back">
+    </form>
     <?php
     if (!empty($movies)) {
         foreach ($movies as $movie) {
