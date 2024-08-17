@@ -6,7 +6,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     exit;
 }
 
-require_once 'includes/db.php'; // Ensure you have the correct path to your db.php file
+require_once 'includes/db.php';
 
 $email = $password = "";
 $email_err = $password_err = $login_err = "";
@@ -72,8 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <?php include('includes/header.php'); ?>
 
-<body class="login-page"> <!-- Ensure this class is applied to get the background image -->
-
+<body class="login-page"> <!-- Apply the login-page class for background -->
 <div class="form-container">
     <h2>Login</h2>
     
