@@ -12,20 +12,24 @@ $email = $password = $confirm_password = "";
 $email_err = $password_err = $confirm_password_err = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate email
+
     if (empty(trim($_POST["email"]))) {
         $email_err = "Please enter an email.";
     } else {
-        $link = getDbConnection();
+        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME, DB_PORT);
+
+        if ($link === false) {
+            die("ERROR: Could not connect. " . mysqli_connect_error());
+        }
 
         $sql = "SELECT id FROM users WHERE email = ?";
+        
         if ($stmt = mysqli_prepare($link, $sql)) {
             mysqli_stmt_bind_param($stmt, "s", $param_email);
             $param_email = trim($_POST["email"]);
 
             if (mysqli_stmt_execute($stmt)) {
                 mysqli_stmt_store_result($stmt);
-
                 if (mysqli_stmt_num_rows($stmt) == 1) {
                     $email_err = "This email is already taken.";
                 } else {
@@ -41,7 +45,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         mysqli_close($link);
     }
 
-    // Validate password
     if (empty(trim($_POST["password"]))) {
         $password_err = "Please enter a password.";
     } elseif (strlen(trim($_POST["password"])) < 6) {
@@ -50,7 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = trim($_POST["password"]);
     }
 
-    // Validate confirm password
     if (empty(trim($_POST["confirm_password"]))) {
         $confirm_password_err = "Please confirm password.";
     } else {
@@ -60,21 +62,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // Check for errors before inserting in database
     if (empty($email_err) && empty($password_err) && empty($confirm_password_err)) {
-        $link = getDbConnection();
+        $link = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME, DB_PORT);
+
+        if ($link === false) {
+            die("ERROR: Could not connect. " . mysqli_connect_error());
+        }
 
         $sql = "INSERT INTO users (email, password) VALUES (?, ?)";
+
         if ($stmt = mysqli_prepare($link, $sql)) {
             mysqli_stmt_bind_param($stmt, "ss", $param_email, $param_password);
 
             $param_email = $email;
-            $param_password = password_hash($password, PASSWORD_DEFAULT); // Encrypt password
+            $param_password = password_hash($password, PASSWORD_DEFAULT);
 
             if (mysqli_stmt_execute($stmt)) {
-                // Redirect to login page after successful registration
                 header("location: login.php");
-                exit;
             } else {
                 echo "Oops! Something went wrong. Please try again later.";
             }
@@ -85,18 +89,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         mysqli_close($link);
     }
 }
-
-include('includes/header.php');
 ?>
 
+<?php include('includes/header.php'); ?>
+
+<body class="register-page"> <!-- Apply the register-page class for background -->
 <div class="form-container">
     <h2>Sign Up</h2>
+    
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
         <div class="form-group">
             <label>Email</label>
-            <input type="email" name="email" class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo htmlspecialchars($email); ?>">
+            <input type="email" name="email" class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $email; ?>">
             <span class="error"><?php echo $email_err; ?></span>
-        </div>
+        </div>    
         <div class="form-group">
             <label>Password</label>
             <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
@@ -115,3 +121,4 @@ include('includes/header.php');
 </div>
 
 <?php include('includes/footer.php'); ?>
+</body>
